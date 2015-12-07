@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <class name="org.imo.lrit.ide.common.model.BufferedObject" 
+           table="BUFFERED_OBJECTS"
+           mutable="false">
+        <id name="id" column="BUFFERED_OBJECT_ID">
+            <generator class="native">
+            <param name="sequence">SEQ_BUFFERED_OBJECT_ID</param>
+            </generator>
+        </id>
+        <property name="createTime" type="calendar" column="OBJECT_CREATE_DTG" />
+        <property name="blobObj" type="blob" column="BUFFERED_OBJECT" access="property" />
+        <property name="ownerURL" type="string" column="OWNER_URL" length="255" />
+        <property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+        <property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/>
+    </class>
+</hibernate-mapping>

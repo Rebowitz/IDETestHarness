@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <class name="org.imo.lrit.ide.common.model.DDPServer" table="DDP_SERVER">
+        <id name="lritId" column="LRIT_ID" type="string" length="4">
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string" column="DDP_SERVER_NAME" length="200" not-null="true"/>
+        <property name="webServiceLocationStr" type="string" column="WEB_SERVICE_LOCATION" length="200" not-null="true" access="property" />
+        <property name="lastSystemStatus" type="integer"  column="SYSTEM_STATUS"/>
+        <property name="lastSystemStatusTime" type="calendar" column="SYSTEM_STATUS_DTG"/>
+        <property name="lastSystemStatusMsgId" type="string" column="SYSTEM_STATUS_MSG_ID" length="23"/>
+        <property name="lastSystemStatusMessage" type="string" column="SYSTEM_STATUS_DETAILS" length="300"/>
+        <property name="connected" type="yes_no">
+            <column name="CONNECTION_STATUS_IND" default="'Y'"/>
+        </property>
+        <property name="connectionStatusChangeTime" type="calendar" column="CONNECTION_STATUS_DTG"/>
+        <property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+        <property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/> 
+        <property name="databaseModifiedTime" type="calendar" column="DTG_MODIFIED"/>
+        <property name="databaseModifiedBy" type="string" column="MODIFIED_BY" length="30"/>
+        <set name="contacts"
+             inverse="true"
+             cascade="all,delete-orphan">
+             <key column="DDP_SERVER_LRIT_ID"/>
+             <one-to-many class="org.imo.lrit.ide.common.model.DDPServerContact" />
+        </set>
+    </class>
+</hibernate-mapping>

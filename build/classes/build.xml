@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="" name="IDETestHarness">
+
+	<property environment="env" />
+    <property name="datacenter" value="testDC" />
+	
+	
+    <!-- Base Directories                                                  -->
+    <!-- This project depends on both the lrit_common and the              -->
+    <!-- lrit_ide_common projects.  If they are not located in the         -->
+    <!-- directories identified below, override the properties from the    -->
+    <!-- environment.                                                      -->
+    
+    <property name="build" value="${basedir}/build" />
+    <property name="src" value="${basedir}/src" />
+	<property name="common" value="${basedir}/common" />
+    <property name="lrit.common" value="${basedir}/../lrit_common" />
+    <property name="lrit.ide.common" value="${basedir}/../lrit_ide_common" />
+
+    <!-- other properties -->
+	<property name="build.classes" value="${build}/classes" />
+    <property name="build.war" value="${build}/war" />	
+    <property name="db.ide.driver" value="oracle.jdbc.driver.OracleDriver" />
+    <property name="db.ide.url"
+              value="jdbc:oracle:thin:@osc-lritdev-02.osc.uscg.mil:1522:LRTDEV11" />
+	<property name="db.ide.userid" value="randrews" />
+	<property name="db.ide.passwd" value="coastie33" />
+	
+	<property name="db.test.userid" value="randrews" />
+	<property name="db.test.passwd" value="coastie33" />
+	<property name="db.test.driver" value="oracle.jdbc.driver.OracleDriver" />
+    <property name="db.test.url"
+              value="jdbc:oracle:thin:@osc-lritdev-02.osc.uscg.mil:1522:LRTDEV11" />
+              	
+    <property name="debug" value="on" />
+    <property name="docdir" value="${build}/doc" />
+    <property name="hib.configfile"
+              value="${build.classes}/hibernate.cfg.xml" />
+    <property name="hib.configfile2" value="${build.classes}/hibernate2.cfg.xml" />          
+    <property name="lib" value="${basedir}/lib" />
+	<property name="log" value="${basedir}/log" />
+    <property name="release" value="1.0" />
+    <property name="testdc" value="${build}/testdc" />
+    <property name="testbuild" value="${build}/testcases" />	
+	<property name="xmlresults" value="${basedir}/xmlresults" />
+	<property name="gensrc" value="${basedir}/gensrc" />
+    <property name="testdcsrc" value="${basedir}/testDC_src" />
+    <property name="testlib" value="${lrit.ide.common}/testlib" />
+	<property name="testcases" value="${basedir}/testcases" />
+    <property name="tmp" value="${basedir}/tmp" />
+ 
+    <property name="idetestresults" value="${tmp}/testresults" />
+    <property name="db.testcases.seedfile" value="${basedir}/sql/seed.sql" />
+	<property name="testresults" value="${basedir}/testresults" />
+	<property name="sprtestresults" value="${testresults}/spr" />
+    <property name="warfile" value="${build.war}/${datacenter}.war" />
+	
+    <!-- Resources from lrit_common -->
+    <property name="lrit.common.etc" value="${lrit.common}/etc" />
+    <property name="lrit.common.src" value="${lrit.common}/src" />
+    <property name="wsdl.ide.dc" value="${lrit.common.etc}/IDE-DC.wsdl" />
+    <property name="wsdl.ide.ddp" value="${lrit.common.etc}/IDE-DDP.wsdl" />
+    <property name="wsdl.dc" value="${lrit.common.etc}/DC.wsdl" />
+    <property name="wsdl.ddp" value="${lrit.common.etc}/DDP.wsdl" />
+
+    <!-- Resources from lrit_ide_common -->
+    <property name="buildtools" value="${lrit.ide.common}/buildtools" />
+    <property name="db.ide.seedfile"
+              value="${lrit.ide.common}/testsrc/sql/seed.sql" />
+    <property name="db.test.seedfile"
+              value="${basedir}/src/sql/testdb_seed.sql" />	
+    <property name="testlib" value="${lrit.ide.common}/testlib" />
+	<property name="dctomcat" value="/opt/tomcat_farm/tomcat4/webapps" />
+	<property name="dcresultsfiles" value="/opt/tomcat_farm/tomcat4/temp" />
+
+<!--  PATH INFO -->
+
+    <path id="build.class.path">
+ <!--       <fileset dir="${containerlib}">
+            <include name="*.jar" />
+        </fileset>
+        <fileset dir="${tomcat}/lib">
+            <include name="servlet-api.jar" />
+        </fileset>
+-->       
+        <fileset dir="${lrit.ide.common}/lib">
+            <include name="*.jar" />
+        </fileset>
+        
+        <fileset dir="${lib}">
+            <include name="*.jar" />
+        </fileset>
+    	<pathelement path="${config}/log4j.properties" />
+        <pathelement path="${build.classes}" />
+    </path>
+	<path id="testdb.class.path">
+		<fileset dir="${build.classes}" >
+			<include name="**/*.class" />
+		</fileset>
+	</path>	
+	
+    <path id="test.class.path">
+        <!--<pathelement path="${build.classes}" />-->
+    	<fileset dir="${testlib}/junit3.8.2">
+    		<include name="junit.jar" />
+    	</fileset>	
+        <path refid="build.class.path" />
+   	    <pathelement path="${common}" />
+    	<pathelement path="${src}" />
+        <pathelement path="${build.classes}" />
+        <pathelement path="${testbuild}" />
+        <!--<pathelement path="${testlib}/junit3.8.2/junit.jar" />-->
+        <pathelement path="${lrit.common.etc}" />    	
+    </path>
+
+    <path id="jaxws.classpath">
+         <fileset dir="${basedir}/lib">
+            <include name="*.jar" />
+            <exclude name="j2ee.jar" />
+        </fileset>	
+    </path>
+    <path id="build.tools.classpath">
+        <fileset dir="${buildtools}/lib">
+            <include name="*.jar" />
+        </fileset>
+        <path refid="build.class.path" />
+    </path>
+ 
+	
+<!-- Task definitions -->
+	
+	   <taskdef name="hibernatetool"
+	             classname="org.hibernate.tool.ant.HibernateToolTask">
+	   	        <classpath refid="build.tools.classpath" />
+	   	</taskdef>
+         	
+    <taskdef name="junit"
+             classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+        <classpath>
+            <pathelement location="${testlib}/junit3.8.2/junit.jar" />
+        </classpath>
+    </taskdef>
+
+    <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+        <classpath refid="jaxws.classpath" />
+    </taskdef>
+
+ 	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+ 		<classpath refid="build.class.path" />
+ 	</taskdef>	
+    
+
+    <!-- The following used when copying properties and xml files - in
+         particular, used in hibernate.cfg.xml -->
+    <filter token="DB_USERID" value="${db.ide.userid}" />
+    <filter token="DB_PASSWORD" value="${db.ide.passwd}" />
+    <filter token="DB_DRIVER" value="${db.ide.driver}" />
+    <filter token="DB_URL" value="${db.ide.url}" />
+	
+    <!-- The following used when copying properties and xml files - in
+         particular, used in hibernate2.cfg.xml -->
+    <filter token="DB_USERID2" value="${db.test.userid}" />
+    <filter token="DB_PASSWORD2" value="${db.test.passwd}" />
+    <filter token="DB_DRIVER2" value="${db.test.driver}" />
+    <filter token="DB_URL2" value="${db.test.url}" />
+
+    <target name="init">
+        <mkdir dir="${build}" />
+    	<mkdir dir="${build.classes}" />
+        <mkdir dir="${testdc}" />
+        <mkdir dir="${gensrc}" />
+    	<mkdir dir="${xmlresults}" />
+        <mkdir dir="${tmp}" />
+    	<mkdir dir="${log}" />
+    	<mkdir dir="${testresults}" />
+    	<mkdir dir="${testbuild}" />
+    </target>
+
+    <target name="cleantest" description="remove all test build products">
+        <delete dir="${testdc}" includeEmptyDirs="true" />
+    	<delete dir="${xmlresults}" includeEmptyDirs="true" />
+    	<delete dir="${basedir}/log" includeEmptyDirs="true" />
+    	<delete dir="${testresults}" includeEmptyDirs="true" />
+    </target>
+	
+    <target name="cleanapp" description="remove all app build products">
+        <delete dir="${build}" includeEmptyDirs="true" />
+        <delete dir="${gensrc}" includeEmptyDirs="true" />
+        <delete dir="${tmp}" includeEmptyDirs="true" />
+    </target>
+	
+    <target name="clean"
+            description="remove all build products"
+            depends="cleantest,cleanapp" />
+	
+    <target name="doc" depends="init" description="Create docs">
+    	<filter token="VERSION" value="${release}" />
+	    <mkdir dir="${docdir}/api" />
+	    <mkdir dir="${tmp}/api" />
+	    <!--================================================================-->
+	    <!-- Create files in a temp dir so that the filter can be used when -->
+	    <!-- copying to the actual directory.                               -->
+	    <!--================================================================-->
+	    <javadoc sourcepath="${src}:${testsrc}:${lrit.ide.common}/src:${lrit.ide.common}/testsrc"
+	             packagenames="*"
+	             classpathref="build.class.path"
+	             destdir="${tmp}/api"
+	             author="true"
+	             Package="true"
+	             version="true"
+	             use="true"
+	             windowtitle="IDE API" />
+	    <!--================================================================-->
+	    <!-- OK, now copy and set the version in all the files that need it.-->
+	    <!--================================================================-->
+	    <copy todir="${docdir}/api" filtering="true">
+	        <fileset dir="${tmp}/api" />
+	    </copy>
+	    <copy todir="${docdir}/api" filtering="true">
+	        <fileset dir="${src}">
+	            <include name="**/doc-files/*" />
+	        </fileset>
+	    </copy>
+	
+	    <copy todir="${docdir}" filtering="true">
+	        <fileset dir="${basedir}/doc" includes="**/*.html" />
+	    </copy>
+	    <copy todir="${docdir}" filtering="false">
+	        <fileset dir="${basedir}/doc" excludes="**/*.html" />
+	    </copy>
+	
+	    <echo message="${ant.project.name} docs have been written to ${docdir}" />
+	</target>
+	
+
+    <target name="genWSClasses"
+            depends="init"
+            description="build classes from IDE, DC, and DDP WSDLs">
+        <echo message="Building IDE server classes from ${wsdl.ide.dc}" />
+        <wsimport debug="true"
+                  verbose="${verbose}"
+                  keep="true"
+                  extension="true"
+                  destdir="${build.classes}"
+                  sourcedestdir="${gensrc}"
+                  wsdl="${wsdl.ide.dc}"
+                  wsdlLocation="http://localhost:8080/ide_dc">
+            <produces file="${build.classes}/org/imo/gisis/xml/lrit/_2008/IdePortType.class" />
+        </wsimport>
+        <echo message="Building IDE server classes from ${wsdl.ide.ddp}" />
+        <wsimport debug="true"
+                  verbose="${verbose}"
+                  keep="true"
+                  extension="true"
+                  destdir="${build.classes}"
+                  sourcedestdir="${gensrc}"
+                  wsdl="${wsdl.ide.ddp}"
+                  wsdlLocation="http://localhost:8080/ide_ddp">
+            <produces file="${build.classes}/org/imo/gisis/xml/lrit/_2008/IdeDDPPortType.class" />
+        </wsimport>
+        <echo message="Building DC client classes from ${wsdl.dc}" />
+        <wsimport debug="true"
+                  verbose="${verbose}"
+                  keep="true"
+                  extension="true"
+                  destdir="${build.classes}"
+                  sourcedestdir="${gensrc}"
+                  wsdl="${wsdl.dc}">
+            <produces file="${build.classes}/org/imo/gisis/xml/lrit/_2008/DcService.class" />
+        </wsimport>
+        <echo message="Building DDP client classes from ${wsdl.ddp}" />
+        <wsimport debug="true"
+                  verbose="${verbose}"
+                  keep="true"
+                  extension="true"
+                  destdir="${build.classes}"
+                  sourcedestdir="${gensrc}"
+                  wsdl="${wsdl.ddp}">
+            <produces file="${build.classes}/org/imo/gisis/xml/lrit/_2008/DdpService.class" />
+        </wsimport>
+        <echo message="Building JAXB classes for DDP and Pricing Update attachment files" />
+        <xjc schema="${lrit.common.etc}/DDP.xsd" destdir="${gensrc}">
+            <produces dir="${gensrc}/org.imo.gisis.xml.lrit.ddp._2008"
+                      includes="**/*.java" />
+        </xjc>
+        <xjc schema="${lrit.common.etc}/PricingFile.xsd" destdir="${gensrc}">
+            <produces dir="${gensrc}/org.imo.gisis.xml.lrit.pricingfile._2008"
+                      includes="**/*.java" />
+        </xjc>
+    </target>
+	
+    <target name="buildTestFramework" 
+		depends="buildconf, genWSClasses" description="build all java classes">		
+<!--
+        <javac srcdir="${gensrc}" debug="${debug}" destdir="${build}/classes">
+            <classpath refid="build.class.path" />
+        </javac>
+-->        
+    	
+        <javac srcdir="${lrit.common.src}"
+               debug="${debug}"
+               destdir="${build}/classes">
+            <classpath refid="build.class.path" />
+        </javac>
+   	
+        <javac srcdir="${lrit.ide.common}/src"
+                debug="${debug}"
+                destdir="${build}/classes">
+             <classpath refid="test.class.path" />
+
+         </javac>
+<!-- 
+    	<pathconvert pathsep="${line.separator}|  |==" property="echo2.path.compile" refid="test.class.path">
+        </pathconvert>
+    	
+    	<echo message="|==compile classpath"/>
+    	<echo message="|  |"/>
+    	<echo message="|  |==${echo2.path.compile}"/> 
+-->    	
+    	<echo message="Common variable contains ${common}" />
+   	
+    	<javac destdir="${build.classes}">
+    			<src path="${src}"/>
+    			<src path="${common}"/>
+    			<src path="${testdcsrc}"/>
+            <classpath refid="test.class.path" />   		
+    	</javac>
+        </target>
+
+    <!-- Copy the conf files to the build dir so that token filtering can 
+         take place -->
+    <target name="buildconf" depends="init">
+        <copy todir="${build}/classes" filtering="true" overwrite="true">
+            <fileset dir="${basedir}">
+                <include name="**/*.properties" />
+                <include name="**/*.xml" />
+            </fileset>
+            <fileset dir="${lrit.ide.common}/src">
+                <include name="**/*.properties" />
+                <include name="**/*.xml" />
+                <exclude name="log4j.properties" />
+            	<exclude name="hibernate.cfg.xml" />
+
+            </fileset>
+        	<fileset dir="${common}">
+        		<include name="**/*.xml" />
+        	</fileset>
+        </copy>
+    </target>	
+
+    <target name="schemacreate"
+            description="recreate database objects">
+    	<echo message="tring to run hibernatetool" />
+        <hibernatetool destdir="${tmp}">
+  
+        	<configuration configurationfile="${hib.configfile2}" />
+            <hbm2ddl export="true"
+                     drop="true"
+                     update="false"
+                     create="true"
+                     outputfilename="recreate_idetestdb.sql"
+                     delimiter=";"
+                     haltonerror="true"
+                     format="true" />
+        </hibernatetool>
+        <echo message="Test database schema has been written to ${tmp}/recreate_idetestdb.sql" />
+    </target>
+
+    <target name="schemaexport"
+            description="export database ddl to a file"
+            depends="buildconf">
+    	<property name="debugclasspath" refid="build.class.path" />
+ <!--   	
+    	<pathconvert pathsep="${line.separator}|  |=="
+    		property="echo.path.compile"
+    		refid="build.class.path">
+    	</pathconvert>
+    	
+    	<echo message="|==compile classpath"/>
+    	<echo message="|  |"/>
+    	<echo message="|  |==${echo.path.compile}"/>
+ -->   	
+        <hibernatetool destdir="${tmp}">
+            <configuration configurationfile="${hib.configfile2}" />
+            <hbm2ddl export="false"
+                     drop="false"
+                     update="false"
+                     create="true"
+                     outputfilename="create_idetestdb.sql"
+                     delimiter=";"
+                     haltonerror="true"
+                     format="true" />
+            <hbm2ddl export="false"
+                     drop="true"
+                     update="false"
+                     create="false"
+                     outputfilename="drop_idetestdb.sql"
+                     delimiter=";"
+                     haltonerror="true"
+                     format="true" />
+        </hibernatetool>
+        <echo message="IDE create DDL was written to ${tmp}/ide_create.sql" />
+        <echo message="IDE drop DDL was written to ${tmp}/ide_drop.sql" />
+    </target>
+
+    <target name="seedtestdb"
+            description="Re-create database, seed with data"
+            depends="schemacreate">
+        <fail unless="db.test.userid"
+              message="Property db.ide.userid must be set" />
+        <fail unless="db.test.passwd"
+              message="Property db.ide.password must be set" />
+        <sql driver="${db.test.driver}"
+             url="${db.test.url}"
+             userid="${db.test.userid}"
+             password="${db.test.passwd}"
+             src="${db.test.seedfile}"
+             classpathref="build.class.path" />
+    </target>
+	
+    <target name="buildDataCenter" depends="clean, init, genWSClasses"
+            description="build all java classes">
+       
+        <javac srcdir="${lrit.common.src}"
+               debug="${debug}"
+               destdir="${build}/classes">
+            <classpath refid="test.class.path" />
+        </javac>
+	
+    	<javac srcdir="${common}/org/imo/lrit/test/common" destdir="${build.classes}">
+    		    <include name="TestDataReadWrite.java" />
+    		    <include name="TestConstants.java" />
+            <classpath refid="test.class.path" />   		
+    	</javac>
+ 	
+        <javac srcdir="${testdcsrc}" debug="${debug}" destdir="${testdc}">
+            <classpath refid="test.class.path" />
+        </javac>
+        <!-- Copy the XML and properties files so they can be found through classpath at -->
+        <!-- runtime.                                                     -->
+        <copy todir="${build.classes}">
+        	<fileset dir="${testdcsrc}" >
+        		<include name="log4j.properties" />
+        	</fileset>	
+        </copy>    	
+    	
+    	
+    	
+    </target>
+	
+    <target name="DataCenterWar" depends="clean, buildDataCenter">
+        <mkdir dir="${build.war}" /> 
+        <war destfile="${warfile}" webxml="etc/web.xml">
+            <webinf dir="${basedir}/etc">
+                <include name="sun-jaxws.xml" />
+            </webinf>
+            <zipfileset dir="${basedir}/lib"
+                        prefix="WEB-INF/lib"
+                        includes="*.jar" excludes="javaee.jar"/>
+            <zipfileset dir="${lrit.common.etc}"
+                        includes="DC.wsdl,*.xsd"
+                        prefix="WEB-INF/wsdl" />
+            <classes dir="${build}/testdc">
+                <include name="**/*" />
+            </classes>
+            <classes dir="${build.classes}">
+                <include name="**/*" />
+            </classes>
+        </war>
+    </target>
+	
+    <target name="deploy"
+            depends="DataCenterWar"
+            description="clean, build, and deploy the IDE application">
+        <copy file="${build.war}/${datacenter}.war"
+              todir="${dctomcat}/webapps" />
+    </target>
+	
+    <target name="testShipPositionReport"
+	            description="runs ship position report tests" >
+        <delete dir="${testdc}/org" includeEmptyDirs="true" />
+    	<delete>
+    		<fileset dir="${dcresultsfiles}" includes="*.xml" />
+    	</delete>		
+    	
+ <!--       	
+    	<pathconvert pathsep="${line.separator}|  |=="
+    		property="echo.testpath.compile"
+    		refid="test.class.path">
+    	</pathconvert>
+    	
+    	<echo message="|==compile classpath"/>
+    	<echo message="|  |"/>
+    	<echo message="|  |==${echo.testpath.compile}"/>
+-->		
+	        <!-- Compile the test source -->
+	        <javac srcdir="${testcases}"
+	               debug="${debug}"
+	               destdir="${testbuild}">
+	            <classpath refid="test.class.path" />
+	        </javac>	
+        	<copy todir="${testcases}">
+	            <fileset dir="${src}">
+	                <include name="**/*.xml" />
+	            </fileset>
+	        </copy>
+	        <mkdir dir="${sprtestresults}" />
+    	    <mkdir dir="${sprtestresults}/reports" />
+	        <junit fork="on" dir="${basedir}">
+	            <classpath>
+	                <path refid="test.class.path" />
+	            </classpath>
+	            <formatter type="xml" />
+	            <batchtest todir="${sprtestresults}">
+	                <fileset dir="${testcases}">
+	                    <include name="**/*.java" />
+	                </fileset>
+	            </batchtest>
+	        </junit>
+	        <junitreport todir="${sprtestresults}/reports">
+	            <fileset dir="${sprtestresults}">
+	                <include name="TEST-*.xml" />
+	            </fileset>
+	            <report format="frames" todir="${sprtestresults}/reports" />
+	        </junitreport>
+    		<antcall target="publishresults" />
+ 	        <echo message="See http://osc-lritdev-03.osc.uscg.mil/idetest for junit results" />
+	</target>
+	<target name="publishresults">
+		<copy todir="/var/www/html/idetest">
+			<fileset dir="${basedir}/testresults/spr/reports">
+				<include name="**/*.html" />
+			</fileset>
+		</copy>	
+	</target>
+	
+</project>
+

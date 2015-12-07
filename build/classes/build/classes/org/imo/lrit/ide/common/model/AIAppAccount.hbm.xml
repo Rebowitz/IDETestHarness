@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <class name="org.imo.lrit.ide.common.model.AIAppAccount" table="AI_APP_ACCOUNTS">
+        <id name="username" column="USERNAME" type="string" length="30">
+        	<generator class="assigned" />
+        </id>
+        <property name="password" type="string" length="60" column="PASSWORD" not-null="true" />
+        <property name="passwordChangeRequired" type="yes_no">
+        	<column name="PASSWORD_CHANGE_REQD_FLAG" default="'N'" />
+        </property>
+        <property name="email" type="string" column="EMAIL" length="100" />
+        <property name="firstName" type="string" column="FIRST_NAME" length="60" not-null="true" />
+        <property name="lastName" type="string" column="LAST_NAME" length="60" not-null="true" />
+        <property name="comments" type="string" column="COMMENTS" length="256" />
+        <property name="lritId" type="string" column="LRIT_ID" length="4" />
+        <property name="officePhone" type="string" column="OFFICE_PHONE" length="60" />
+        <property name="mobilePhone" type="string" column="MOBILE_PHONE" length="60" />
+        <property name="pager" type="string" column="PAGER" length="60" />
+
+        <property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true" />
+        <property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true" />
+        
+        <property name="databaseModifiedTime" type="calendar" column="DTG_MODIFIED" />
+        <property name="databaseModifiedBy" type="string" column="MODIFIED_BY" length="30" />
+        <property name="userStatus" type="string" column="USER_ACCOUNT_STATUS" length="20" />
+        <set name="roleLinks" table="AI_APP_ACCOUNT_ROLES">
+            <key column="USERNAME" />
+            <composite-element class="org.imo.lrit.ide.common.model.AIAppAccountRole">
+                <parent name="account" />
+                <many-to-one name="role" column="ROLE_NAME" not-null="true" class="org.imo.lrit.ide.common.model.AIAppRole" />
+            </composite-element>
+        </set>
+    </class>
+</hibernate-mapping>

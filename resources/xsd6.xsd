@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://gisis.imo.org/XML/LRIT/journalReport/2008" xmlns:lrit="http://gisis.imo.org/XML/LRIT/types/2008" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://gisis.imo.org/XML/LRIT/journalReport/2008">
+    <xs:import namespace="http://gisis.imo.org/XML/LRIT/types/2008" schemaLocation="xsd1.xsd"/>
+    <xs:simpleType name="messageTypeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+The “Message Type” parameter indicates the type of message of the 
+associated LRIT message.  A value of 12 indicates that this is
+a JournalReport.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="12"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="JournalReport" type="JournalReportType"/>
+    <xs:complexType name="JournalReportType">
+        <xs:sequence>
+            <xs:element name="MessageType" type="messageTypeType"/>
+            <xs:element name="MessageId" type="lrit:msgIDType"/>
+            <xs:element name="Message" type="lrit:messageType"/>
+            <xs:element name="TimeStamp" type="xs:dateTime"/>
+            <xs:element name="Originator" type="lrit:lritIDType"/>
+            <xs:element name="JournalFile" type="xs:base64Binary" xmime:expectedContentTypes="application/zip">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+The JournalFile will be a binary attachment to the journal message.
+The file will be a .zip file containing numerous XML files, one
+per message delivered between member Contracting Governments of the 
+R/C/IDC.
+
+The filename of the attached .zip file will be of the form
+'JournalYYYYMMDD_XXXX.zip', where XXXX represents the LRIT id
+of the issuing Data Centre and YYYYMMDD represents the date.
+
+Files contained within this .zip file will have filenames of the
+form 'MessageId.xml', where MessageId represents the message
+Id of the enclosed message.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DDPVersionNum" type="lrit:ddpVersionNumType"/>
+        </xs:sequence>
+        <xs:attribute default="0" name="test" type="lrit:testType" use="optional"/>
+    </xs:complexType>
+</xs:schema>

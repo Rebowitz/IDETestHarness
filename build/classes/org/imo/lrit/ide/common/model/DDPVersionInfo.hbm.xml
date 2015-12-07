@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+	<class name="org.imo.lrit.ide.common.model.DDPVersionInfo" table="DDP_VERSIONS">
+        <id name="ddpVersionNum" column="DDP_VERSION_NUM" type="string">
+            <generator class="assigned" />
+        </id>
+        <property name="allowedStartTime" type="calendar" column="ALLOWED_START_DTG" not-null="true"/>
+        <property name="allowedEndTime" type="calendar" column="ALLOWED_CUTOFF_DTG"/>
+        <property name="requestMessageTime" type="calendar" column="REQUEST_MSG_DTG"/>
+        <property name="updateMessageId" type="string" column="UPDATE_MSG_ID" length="23" />
+        <property name="localImplementationTime" type="calendar" column="LOCAL_IMPLEMENTATION_DTG"/>
+        <property name="notificationTypeCode" type="integer" column="NOTIFICATION_TYPE_CD" not-null="true"/>
+        <property name="attachmentFilename" type="string" column="ATTACHMENT_FILENAME" length="100" />
+        <property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+        <property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/> 
+        <property name="databaseModifiedTime" type="calendar" column="DTG_MODIFIED"/>
+        <property name="databaseModifiedBy" type="string" column="MODIFIED_BY" length="30"/>
+	</class>
+</hibernate-mapping>

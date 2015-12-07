@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+  <session-factory>
+
+    <!-- SQL dialect -->
+    <property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
+
+    <!-- Database connection settings - the @xxx@ tokens will be replaced by -->
+    <!-- ant when this file is copied to the build directory.                -->
+    <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+    <property name="connection.url">jdbc:oracle:thin:@osc-lritdev-02.osc.uscg.mil:1522:LRTDEV11</property>
+    <property name="connection.username">randrews</property>
+    <property name="connection.password">coastie33</property>
+
+    <!-- Use the C3P0 connection pool. -->
+    <property name="hibernate.c3p0.min_size">3</property>
+    <property name="hibernate.c3p0.max_size">5</property>
+    <property name="hibernate.c3p0.timeout">1800</property>
+
+    <!-- Enable Hibernate's automatic session context management -->
+    <property name="current_session_context_class">thread</property>
+
+    <!-- Disable the second-level cache  -->
+    <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+    <property name="cache.use_query_cache">false</property>
+    <property name="cache.use_minimal_puts">false</property>
+    <property name="max_fetch_depth">3</property>
+
+    <!-- Echo all executed SQL to stdout -->
+    <property name="show_sql">true</property>
+
+    <!-- Drop and re-create the database schema on startup -->
+    <!-- <property name="hbm2ddl.auto">create</property> -->
+
+    <mapping resource="org/imo/lrit/ide/test/model/Spr.hbm.xml"/>
+	<mapping resource="org/imo/lrit/ide/test/model/TestMain.hbm.xml"/>
+    <mapping resource="org/imo/lrit/ide/test/model/TestMetadata.hbm.xml"/>
+	
+  </session-factory>
+
+</hibernate-configuration>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+	<class name="org.imo.lrit.ide.common.model.TimedTask" table="TIMED_TASKS" mutable="true">
+        <id name="id" column="TIMED_TASK_ID">
+            <generator class="native">
+            <param name="sequence">SEQ_TIMED_TASK_ID</param>
+            </generator>
+        </id>
+        <property name="startTimeTS" type="timestamp" column="START_DTG" not-null="true"/>
+        <property name="lastRunTimeTS" type="timestamp" column="LAST_RUN_DTG"/>
+        <property name="periodMillis" type="long">
+            <column name="PERIOD_MILLIS" default="0" />
+        </property>
+        <property name="executorClassName" type="string" column="CLASS_NAME" length="100" not-null="true"/>
+        <property name="arg1" type="string" column="ARG1" length="100" />
+        <property name="arg2" type="string" column="ARG2" length="100" />
+        <property name="arg3" type="string" column="ARG3" length="100" />
+        <property name="lastRunStatus" type="string" column="LAST_RUN_STATUS" length="100" />
+        <property name="active" type="yes_no">
+            <column name="ACTIVE_IND" default="'Y'" />
+        </property>
+        <property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+        <property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/>
+        <property name="databaseModifiedTime" type="calendar" column="DTG_MODIFIED"/>
+        <property name="databaseModifiedBy" type="string" column="MODIFIED_BY" length="30"/> 
+	</class>
+</hibernate-mapping>

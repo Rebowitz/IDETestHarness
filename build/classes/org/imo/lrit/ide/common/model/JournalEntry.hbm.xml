@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+	<class name="org.imo.lrit.ide.common.model.JournalEntry" table="JOURNAL" mutable="false">
+        <id name="id" column="JOURNAL_ID">
+            <generator class="native">
+            <param name="sequence">SEQ_JOURNAL_ID</param>
+            </generator>
+        </id>
+        <many-to-one
+            name="parentJournalEntry"
+            column="PARENT_JOURNAL_ID"
+            class="org.imo.lrit.ide.common.model.JournalEntry"
+            not-null="false" 
+            foreign-key="FK_JOURNAL_PARENT_JOURNAL"/>
+        <property name="journallerLritId" type="string" column="JOURNALLER_LRIT_ID" length="4"/>
+        <property name="messageId" type="string" column="MSG_ID" length="23"/>
+        <property name="messageTypeCode" type="integer" column="MSG_TYPE_CD"/>
+        <property name="systemStatus" type="integer" column="SYSTEM_STATUS"/>
+        <property name="origDataUserLritId" type="string" column="ORIG_DATA_USER_LRIT_ID" length="4"/>
+        <property name="origLritId" type="string" column="ORIG_LRIT_ID" length="4"/>
+        <property name="origIpAddress" type="string" column="ORIG_IP_ADDRESS" length="39"/>
+        <property name="destDataUserLritId" type="string" column="DEST_DATA_USER_LRIT_ID" length="4"/>
+        <property name="destLritId" type="string" column="DEST_LRIT_ID" length="4"/>
+        <property name="destWebServiceLocationStr" type="string" column="DEST_WEB_SERVICE_LOCATION" length="200" access="property" />
+        <property name="destResponseTime" type="calendar" column="DEST_RESPONSE_DTG" />
+        <property name="refMessageId" type="string" column="REFERENCE_MSG_ID"  length="23"/>
+        <property name="ideReceivedTime" type="calendar" column="IDE_RECEIVE_DTG"/>
+        <property name="ideSentTime" type="calendar" column="IDE_SEND_DTG"/>
+        <property name="messageTime" type="calendar" column="MSG_DTG" not-null="true" />
+        <property name="testMsg" type="yes_no">
+            <column name="TEST_MSG_IND" default="'N'"/>
+        </property>
+        <property name="sar" type="yes_no">
+            <column name="SAR_IND" default="'N'"/>
+        </property>
+        <property name="statusCode" type="string" column="STATUS_CD" length="3"/>
+        <property name="statusMessage" type="string" column="STATUS_MESSAGE" length="500"/>
+        <property name="retries" type="integer" column="RETRIES"/>
+        <property name="attachmentFilename" type="string" column="ATTACHMENT_FILENAME" length="60"/>
+        <property name="xml" type="text" column="XML_CONTENT" not-null="true"/>
+        <property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+        <property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/> 
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://gisis.imo.org/XML/LRIT/positionRequest/2008" xmlns:lrit="http://gisis.imo.org/XML/LRIT/types/2008" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://gisis.imo.org/XML/LRIT/positionRequest/2008">
+    <xs:import namespace="http://gisis.imo.org/XML/LRIT/types/2008" schemaLocation="xsd1.xsd"/>
+    <xs:simpleType name="messageTypeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+The “Message Type” parameter indicates the type of message of the 
+associated LRIT message.  Valid values for a Ship Position Request
+are:
+
+4  - Ship Position Request; Request for ship position report.
+5  - SAR Poll Request; SAR request for poll of ship’s position.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="accessTypeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+The “Access Type” parameter indicates the requesting LRIT Data User’s 
+entitlement to receive the LRIT data. The LRIT Data User may request 
+ship position data as: a Coastal State, a Flag State, a Port State,
+or a SAR service.  In the case of a Port State request, tracking may
+be based on: the ship's distance from a specific port, port facility 
+or "place" (as defined in the DDP); the ship's distance from the 
+coastline; or a specific time period during which tracking is 
+requested.  Values for Access Type are defined as follows:
+
+1 - Coastal State
+2 - Flag State
+3 - Port State with distance trigger from port or port facility
+4 - Port State with distance trigger from coast
+5 - Port State with time trigger
+6 - SAR
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+            <xs:enumeration value="6"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="requestTypeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+The “Request Type” parameter indicates whether the request is 
+for a one-time poll, polls at a specified rate, archived data,
+stop/don't start sending position reports, or the most recent
+position report for the ship.  The "stop/don't start sending 
+position reports" message option provides Contracting Governments 
+with the ability to temporarily override Standing Orders in the
+DDP. Consider the scenario where a Contracting Government is 
+tracking a ship via Port State access and does not want to receive
+positional reports as a Coastal State. The Contracting Government
+could submit a request message with "Coastal" for the “Access Type” 
+parameter and "stop/don’t start sending position reports" for the
+“Request Type.” The providing Data Centre, after receiving such a
+request message, would not send any Coastal State position reports
+for the specified vessel to the recipient Contracting Government
+for the period of time stated in the “Request Duration” parameter.
+Values for the "Request Type" are:
+
+1  - One time poll of the ship's current location.
+2  - Request periodic rate change to 15 minutes.
+3  - Request periodic rate change to 30 minutes.
+4  - Request periodic rate change to 1 hour.
+5  - Request periodic rate change to 3 hours.
+6  - Request periodic rate change to 6 hours.
+7  - Archived data request.
+8  - Stop/don't start sending position reports.
+9  - Most recent position report.
+10 - Request periodic rate change to 12 hours. 
+11 - Request periodic rate change to 24 hours. 
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+            <xs:enumeration value="6"/>
+            <xs:enumeration value="7"/>
+            <xs:enumeration value="8"/>
+            <xs:enumeration value="9"/>
+            <xs:enumeration value="10"/>
+            <xs:enumeration value="11"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="requestDurationType">
+        <xs:attribute name="startTime" type="xs:dateTime" use="optional"/>
+        <xs:attribute name="stopTime" type="xs:dateTime" use="optional"/>
+    </xs:complexType>
+    <xs:simpleType name="distanceType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+The “Distance” parameter indicates the distance in nautical miles 
+from a port, port facility, "place", or coastline where the requesting 
+Port State wishes to track the designated ship. This parameter 
+is mandatory when the “Access type” parameter is set to 3 or 4. 
+
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="9999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="ShipPositionRequest" type="ShipPositionRequestType"/>
+    <xs:complexType name="ShipPositionRequestType">
+        <xs:sequence>
+            <xs:element name="MessageType" type="messageTypeType"/>
+            <xs:element name="MessageId" type="lrit:msgIDType"/>
+            <xs:element name="IMONum" type="lrit:imoNumType"/>
+            <xs:element name="DataUserProvider" type="lrit:lritIDType"/>
+            <xs:element name="AccessType" type="accessTypeType"/>
+            <xs:choice>
+                <xs:element name="Port" type="lrit:locodeType"/>
+                <xs:element name="PortFacility" type="lrit:imoPortFacilityNumberType"/>
+                <xs:element name="Place" type="lrit:placeCodeType"/>
+            </xs:choice>
+            <xs:element name="Distance" type="distanceType"/>
+            <xs:element name="RequestType" type="requestTypeType"/>
+            <xs:element minOccurs="0" name="RequestDuration" type="requestDurationType"/>
+            <xs:element name="DataUserRequestor" type="lrit:lritIDType"/>
+            <xs:element name="TimeStamp" type="xs:dateTime"/>
+            <xs:element name="DDPVersionNum" type="lrit:ddpVersionNumType"/>
+        </xs:sequence>
+        <xs:attribute default="0" name="test" type="lrit:testType" use="optional"/>
+    </xs:complexType>
+</xs:schema>

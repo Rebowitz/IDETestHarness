@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.imo.lrit.ide.test.model.TestMetadata" table="TEST_METADATA">
+    <id name="testid" column="TEST_ID">
+      <generator class="assigned" />
+    </id>
+    <property name="respmsgtype" type="integer" column="MSG_TYPE_CODE"/>
+    <property name="quantity" type="integer" column="QUANTITY"/>
+    <property name="location" type="string" column="LOCATION" length="2"/>
+  </class>
+</hibernate-mapping>
+

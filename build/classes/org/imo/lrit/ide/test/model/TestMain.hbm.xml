@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+	<class name="org.imo.lrit.ide.test.model.TestMain" table="TestMain">
+        <id name="testid" column="TEST_ID" type="integer">
+            <generator class="assigned" />
+        </id>
+
+	<property name="msgType" type="string" column="MSG_TYPE" length="50"/>
+	<property name="testDescription" type="string" column="TEST_DESCRIPTION" length="100"/>
+	<property name="activeTest" type="string" column="ACTIVE_TEST" length="1"/>
+	<property name="successfail" type="integer" column="SUCCESSFAIL"/>
+        
+	</class>
+</hibernate-mapping>

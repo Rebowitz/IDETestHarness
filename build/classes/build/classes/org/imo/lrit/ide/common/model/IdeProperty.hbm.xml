@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+	<class name="org.imo.lrit.ide.common.model.IdeProperty" table="IDE_PROPERTIES">
+        <composite-id class="org.imo.lrit.ide.common.model.IdePropertyKey" name="key" access="property">
+            <key-property name="name" type="string" column="PROPERTY_NAME" length="30"/>
+            <key-property name="component" type="string" column="COMPONENT" length="15"/>
+            <key-property name="instance" type="string" column="INSTANCE" length="100"/>
+            <key-property name="effectiveTS" type="timestamp" column="EFFECTIVE_DTG"/>
+        </composite-id>
+        <property name="value" type="string" column="PROPERTY_VALUE" length="2048" not-null="true"/>
+        <property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+        <property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/> 
+        <property name="databaseModifiedTime" type="calendar" column="DTG_MODIFIED"/>
+        <property name="databaseModifiedBy" type="string" column="MODIFIED_BY" length="30"/>
+	</class>
+</hibernate-mapping>

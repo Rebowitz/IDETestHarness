@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping default-access="field">
+	 <class name="org.imo.lrit.ide.common.model.AIAppAccountRole" table="AI_APP_ACCOUNT_ROLES">
+	    <id name="username" column="USERNAME" type="string" length="30">
+        	<generator class="assigned" />
+        </id>
+        <property name="role" type="string" length="20" column="ROLE_NAME" not-null="true" />
+	</class>
+</hibernate-mapping>       

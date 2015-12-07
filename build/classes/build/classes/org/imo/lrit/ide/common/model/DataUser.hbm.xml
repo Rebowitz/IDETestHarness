@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <class name="org.imo.lrit.ide.common.model.DataUser" table="DATA_USERS">
+        <id name="lritId" column="LRIT_ID" type="string" length="4">
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string" column="DATA_USER_NAME" length="200" not-null="true"/>
+        <property name="typeCode" type="string" column="DATA_USER_TYPE_CD" length="3" not-null="true"/>
+        <property name="countryCode" type="string" column="COUNTRY_CD" length="3"/>
+        <set name="contacts" 
+             inverse="true"
+             cascade="all,delete-orphan">
+             <key column="DATA_USER_LRIT_ID"/>
+             <one-to-many class="org.imo.lrit.ide.common.model.DataUserContact" />
+        </set>
+        <many-to-one
+            name="parentDataUser"
+            column="PARENT_DATA_USER_LRIT_ID"
+            class="org.imo.lrit.ide.common.model.DataUser"
+            not-null="false" 
+            foreign-key="FK_DU_PARENT_DU"/>
+        <many-to-one
+            name="dataCentre"
+            column="DATA_CENTRE_LRIT_ID"
+            class="org.imo.lrit.ide.common.model.DataCentre"
+            not-null="true" 
+            foreign-key="FK_DATA_USERS_DATA_CTR"/>
+        <property name="active" type="yes_no">
+            <column name="ACTIVE_IND" default="'Y'"/>
+        </property>
+        <property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+        <property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/> 
+        <property name="databaseModifiedTime" type="calendar" column="DTG_MODIFIED"/>
+        <property name="databaseModifiedBy" type="string" column="MODIFIED_BY" length="30"/>
+    </class>
+</hibernate-mapping>

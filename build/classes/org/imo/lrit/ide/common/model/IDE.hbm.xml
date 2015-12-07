@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <class
+        name="org.imo.lrit.ide.common.model.IDE"
+        table="IDE">
+        <comment>This table contains attributes associated with the LRIT IDE.</comment>
+        <id
+            name="lritId"
+            column="LRIT_ID"
+            type="string"
+            length="4">
+            <generator class="assigned" />
+        </id>
+        <property
+            name="name"
+            type="string"
+            column="IDE_NAME"
+            length="200"
+            not-null="true" />
+        <property
+            name="webServiceLocationDCStr"
+            type="string"
+            length="200"
+            not-null="true"
+            access="property">
+            <column name="WEB_SERVICE_LOCATION_DC">
+                <comment>The URL of the IDEs DC web service interface.</comment>
+            </column>
+            </property>
+        <property
+            name="webServiceLocationDDPStr"
+            type="string"
+            column="WEB_SERVICE_LOCATION_DDP"
+            length="200"
+            not-null="true"
+            access="property" />
+        <property
+            name="databaseCreateTime"
+            type="calendar"
+            column="DTG_CREATED"
+            not-null="true" />
+        <property
+            name="databaseCreatedBy"
+            type="string"
+            column="CREATED_BY"
+            length="30"
+            not-null="true" />
+        <property
+            name="databaseModifiedTime"
+            type="calendar"
+            column="DTG_MODIFIED" />
+        <property
+            name="databaseModifiedBy"
+            type="string"
+            column="MODIFIED_BY"
+            length="30" />
+
+        <set
+            name="contacts"
+            inverse="true"
+            cascade="save-update,delete,delete-orphan">
+            <key column="IDE_LRIT_ID" />
+            <one-to-many class="org.imo.lrit.ide.common.model.IDEContact" />
+        </set>
+    </class>
+</hibernate-mapping>

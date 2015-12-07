@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+	<class name="org.imo.lrit.ide.test.model.Spr" table="SPR">
+        <id name="testid" column="TEST_ID" type="integer">
+            <generator class="assigned" />
+        </id>
+	<property name="testDescription" type="string" column="TEST_DESCRIPTION" length="100"/>
+	<property name="messagetype" type="integer" column="MESSAGE_TYPE"/>
+	<property name="latitude" type="string" column="LATITUDE" length="10"/>
+	<property name="longitude" type="string" column="LONGITUDE" length="11"/>
+	<property name="timestamp1" type="string" column="TIMESTAMP1" length="19"/>
+	<property name="shipbourneequipmentid" type="string" column="SHIPBORNE_EQUIPMENT_ID" length="25"/>
+	<property name="aspid" type="string" length="4" column="ASP_ID"/>
+	<property name="cspid" type="string" length="4" column="CSP_ID"/>
+	<property name="messageid" type="string" column="MESSAGE_ID" length="25"/>
+	<property name="referenceid" type="string" column="REFERENCE_ID" length="25"/>
+	<property name="mmsinum" type="string" column="MMSI_NUM" length="9"/>
+	<property name="imonum" type="string" column="IMO_NUM"/>
+	<property name="timestamp2" type="string" column="TIMESTAMP2" length="19"/>
+	<property name="timestamp3" type="string" column="TIMESTAMP3" length="19"/>
+	<property name="dcid" type="string" length="4" column="DC_ID"/>
+	<property name="timestamp4" type="string" column="TIMESTAMP4" length="19"/>
+	<property name="timestamp5" type="string" column="TIMESTAMP5" length="19"/>
+	<property name="responsetype" type="integer" column="RESPONSE_TYPE"/>
+	<property name="datauserrequestor" type="string" length="7" column="DATA_USER_REQUESTOR"/>
+	<property name="shipname" type="string" column="SHIP_NAME" length="50"/>
+	<property name="ddpversionnum" type="string" column="DDP_VERSION_NUM" length="256"/>
+	<property name="datauserprovider" type="string" length="31" column="DATA_USER_PROVIDER"/>
+	
+        
+	</class>
+</hibernate-mapping>

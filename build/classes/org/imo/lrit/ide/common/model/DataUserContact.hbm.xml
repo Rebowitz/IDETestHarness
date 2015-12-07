@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+	<class name="org.imo.lrit.ide.common.model.DataUserContact" table="DATA_USER_CONTACTS">
+        <id name="contactId" column="CONTACT_ID" type="string" length="30">
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="lritComponent" 
+                     class="org.imo.lrit.ide.common.model.DataUser"
+                     column="DATA_USER_LRIT_ID"
+                     not-null="true"
+                     foreign-key="FK_DU_CONTACTS_DU" />
+        <property name="title" type="string" column="TITLE" length="60"/>
+        <property name="firstName" type="string" column="FIRST_NAME" length="60"/>
+        <property name="lastName" type="string" column="LAST_NAME" length="100"/>
+        <property name="department" type="string" column="DEPARTMENT" length="200"/>
+        <property name="position" type="string" column="POSITION" length="200"/>
+        <property name="addressLine1" type="string" column="ADDRESS_LINE_1" length="200"/>
+        <property name="addressLine2" type="string" column="ADDRESS_LINE_2" length="200"/>
+        <property name="addressLine3" type="string" column="ADDRESS_LINE_3" length="200"/>
+        <property name="addressCity" type="string" column="ADDRESS_CITY" length="100"/>
+        <property name="addressPostCode" type="string" column="ADDRESS_POST_CODE" length="30"/>
+        <property name="addressState" type="string" column="ADDRESS_STATE" length="100"/>
+        <property name="addressCountry" type="string" column="ADDRESS_COUNTRY" length="100"/>
+        <property name="fax" type="string" column="FAX" length="30"/>
+        <property name="email" type="string" column="EMAIL" length="60"/>
+        <property name="telephone" type="string" column="TELEPHONE" length="30"/>
+        <property name="website" type="string" column="WEBSITE" length="100"/>
+        <property name="type" type="string" column="CONTACT_TYPE" length="15"/>
+        <property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+        <property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/> 
+        <property name="databaseModifiedTime" type="calendar" column="DTG_MODIFIED"/>
+        <property name="databaseModifiedBy" type="string" column="MODIFIED_BY" length="30"/>
+	</class>
+</hibernate-mapping>

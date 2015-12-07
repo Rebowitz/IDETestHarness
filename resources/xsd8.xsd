@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://gisis.imo.org/XML/LRIT/pricingUpdate/2008" xmlns:lrit="http://gisis.imo.org/XML/LRIT/types/2008" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://gisis.imo.org/XML/LRIT/pricingUpdate/2008">
+    <xs:import namespace="http://gisis.imo.org/XML/LRIT/types/2008" schemaLocation="xsd1.xsd"/>
+    <xs:simpleType name="messageTypeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+The “Message Type” parameter indicates the type of message of the 
+associated LRIT message.  A value of 15 indicates a Pricing
+Update message. 
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="15"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="PricingUpdate" type="PricingUpdateType"/>
+    <xs:complexType name="PricingUpdateType">
+        <xs:sequence>
+            <xs:element name="MessageType" type="messageTypeType"/>
+            <xs:element name="MessageId" type="lrit:msgIDType"/>
+            <xs:element name="Message" type="lrit:messageType"/>
+            <xs:element name="TimeStamp" type="xs:dateTime"/>
+            <xs:element name="DDPVersionNum" type="lrit:ddpVersionNumType"/>
+            <xs:element name="PricingVersionNum" type="lrit:pricingVersionNumType"/>
+            <xs:element name="PricingFile" type="xs:base64Binary" xmime:expectedContentTypes="application/zip">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+The "Pricing File" is a zipped XML file whose name is of the format
+'PricingYYYYMMDD_XXXX.zip.  XXXX represents the LRIT ID of the 
+issuing Data Centre, or the IDE in cases where the IDE is sending
+a full pricing update.  YYYYMMDD represents the date of transmission.
+
+The XML file itself is a PricingFile element, as described in 
+the PricingFile.xsd. 
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute default="0" name="test" type="lrit:testType" use="optional"/>
+    </xs:complexType>
+</xs:schema>

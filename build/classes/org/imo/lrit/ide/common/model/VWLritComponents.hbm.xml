@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field">
+	<class name="org.imo.lrit.ide.common.model.VWLritComponents"
+		table="VW_LRIT_COMPONENTS">
+		<id name="lritId" column="LRIT_ID" type="string" length="4">
+			<generator class="assigned" />
+		</id>
+		<property name="compntName" type="string"
+			column="COMPONENT_NAME" length="200" />
+		<property name="compntType" type="string"
+			column="COMPONENT_TYPE" length="80" />
+		<property name="cntryCd" type="string" column="COUNTRY_CD"
+			length="3" />
+	</class>
+</hibernate-mapping>

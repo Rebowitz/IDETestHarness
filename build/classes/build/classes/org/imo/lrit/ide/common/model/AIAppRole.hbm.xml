@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.imo.lrit.ide.common.model" default-access="field">
+    <class name="AIAppRole" table="AI_APP_ROLES">
+        <id name="role" column="ROLE_NAME" type="string" length="20">
+            <generator class="assigned" />
+        </id>
+        <property name="desc" type="string" column="DESCRIPTION" length="60" />
+        <property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+        <property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/> 
+        <property name="databaseModifiedTime" type="calendar" column="DTG_MODIFIED"/>
+        <property name="databaseModifiedBy" type="string" column="MODIFIED_BY" length="30"/>
+    </class>
+</hibernate-mapping>

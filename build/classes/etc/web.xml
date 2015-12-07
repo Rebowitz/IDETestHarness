@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.4" mlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <description>testdc</description>
+    <display-name>testdc</display-name>
+
+
+        
+    <listener>
+            <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+    </listener>
+    <filter>
+        <filter-name>WSDL Filter</filter-name>
+        <filter-class>org.imo.lrit.ide.test.servlet.WSDLServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>WSDL Filter</filter-name>
+        <servlet-name>dcService</servlet-name>
+    </filter-mapping>
+    
+    <servlet>
+        <description>JAX-WS endpoint - testdc</description>
+        <display-name>test-dc</display-name>
+        <servlet-name>DcService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>DcService</servlet-name>
+        <url-pattern>/testdc/*</url-pattern>
+    </servlet-mapping>
+ 
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+</web-app>

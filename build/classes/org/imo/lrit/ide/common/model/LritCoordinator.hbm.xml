@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <class
+        name="org.imo.lrit.ide.common.model.LritCoordinator"
+        table="LRIT_COORDINATOR">
+        <id
+            name="lritId"
+            column="LRIT_ID"
+            type="string"
+            length="4">
+            <generator class="assigned" />
+        </id>
+        <property
+            name="name"
+            type="string"
+            column="LRIT_COORDINATOR_NAME"
+            length="200"
+            not-null="true" />
+        <property
+            name="additionalInformation"
+            type="string"
+            column="ADDITIONAL_INFORMATION"
+            length="200"
+            not-null="false" />
+        <property
+            name="databaseCreateTime"
+            type="calendar"
+            column="DTG_CREATED"
+            not-null="true" />
+        <property
+            name="databaseCreatedBy"
+            type="string"
+            column="CREATED_BY"
+            length="30"
+            not-null="true" />
+        <property
+            name="databaseModifiedTime"
+            type="calendar"
+            column="DTG_MODIFIED" />
+        <property
+            name="databaseModifiedBy"
+            type="string"
+            column="MODIFIED_BY"
+            length="30" />
+
+        <set
+            name="contacts"
+            inverse="true"
+            cascade="all,delete-orphan">
+            <key column="LRIT_COORDINATOR_LRIT_ID" />
+            <one-to-many class="org.imo.lrit.ide.common.model.LritCoordinatorContact" />
+        </set>
+    </class>
+</hibernate-mapping>

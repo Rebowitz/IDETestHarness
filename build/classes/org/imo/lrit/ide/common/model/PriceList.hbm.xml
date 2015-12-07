@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+	<class name="org.imo.lrit.ide.common.model.PriceList" table="PRICE_LIST" mutable="false">
+		<id name="priceListID" column="PRICE_LIST_ID">
+			<generator class="native">
+				<param name="sequence">SEQ_PRICE_LIST_ID</param>
+			</generator>
+		</id>
+		<property name="messageId" type="string" column="MSG_ID" length="23" access="property" />
+		<property name="priceListXml" type="text" column="PRICE_LIST_XML" not-null="true"/>
+		<property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+		<property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/>
+		<property name="databaseModifiedTime" type="calendar" column="DTG_MODIFIED"/>
+		<property name="databaseModifiedBy" type="string" column="MODIFIED_BY" length="30"/>
+	</class>
+</hibernate-mapping>

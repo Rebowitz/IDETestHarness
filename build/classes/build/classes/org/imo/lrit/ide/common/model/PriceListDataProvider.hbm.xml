@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+	<class name="org.imo.lrit.ide.common.model.PriceListDataProvider" table="PRICE_LIST_DATA_PROVIDER">
+		<id name="priceListDataProviderID" column="PRICE_LIST_DATA_PROVIDER_ID">
+			<generator class="native">
+				<param name="sequence">SEQ_DATA_PROVIDER_ID</param>
+			</generator>
+		</id>
+		<many-to-one name="priceList" 
+			class="org.imo.lrit.ide.common.model.PriceList"
+			column="PRICE_LIST_ID"
+			not-null="true"/>
+		<property name="dataCentreLritID" type="string" column="DATA_CENTRE_LRIT_ID" not-null="true"/>
+		<property name="dataUserLritID" type="string" column="DATA_USER_LRIT_ID" not-null="true"/>
+		<property name="issueDate" type="calendar" column="ISSUE_DTG" not-null="true"/>
+		<property name="effectiveDate" type="calendar" column="EFFECTIVE_DTG" not-null="true"/>
+		<property name="expirationDate" type="calendar" column="EXPIRE_DTG"/>
+		<property name="databaseCreateTime" type="calendar" column="DTG_CREATED" not-null="true"/>
+		<property name="databaseCreatedBy" type="string" column="CREATED_BY" length="30" not-null="true"/>
+		<property name="databaseModifiedTime" type="calendar" column="DTG_MODIFIED"/>
+		<property name="databaseModifiedBy" type="string" column="MODIFIED_BY" length="30"/>
+	</class>
+</hibernate-mapping>

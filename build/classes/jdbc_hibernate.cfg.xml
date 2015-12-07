@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+        
+<!-- This hibernate config file is intended for use by ant targets that -->
+<!-- use hibernate tools, and by unit tests.  It configures hibernate   -->
+<!-- to use the specified JDBC connectivity and to manage its own       -->
+<!-- connection pool.  For running within Tomcat that has the IDE db    -->
+<!-- configured as a DataSource, use the hibernate.cfg.xml file.        -->
+<!--                                                                    -->
+<!-- Note that, as there does not appear to be any "include" capability -->
+<!-- in the <session-factory> element, <mapping> elements must be       -->
+<!-- manually maintained in both this file and hibernate.cfg.xml.       -->
+
+<hibernate-configuration>
+
+  <session-factory>
+
+    <!-- SQL dialect -->
+    <property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
+    <!-- <property name="dialect">org.hibernate.dialect.MySQLDialect</property> -->
+
+    <!-- Database connection settings - the @xxx@ tokens will be replaced by -->
+    <!-- ant when this file is copied to the build directory.                -->
+    <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+    <property name="connection.url">jdbc:oracle:thin:@osc-lritdev-02.osc.uscg.mil:1522:LRTDEV11</property>
+    <property name="connection.username">randrews</property>
+    <property name="connection.password">coastie33</property>
+
+    <!-- Use the C3P0 connection pool. -->
+    <property name="hibernate.c3p0.min_size">3</property>
+    <property name="hibernate.c3p0.max_size">5</property>
+    <property name="hibernate.c3p0.timeout">1800</property>
+
+    <!-- Enable Hibernate's automatic session context management -->
+    <property name="current_session_context_class">thread</property>
+
+    <!-- Disable the second-level cache  -->
+    <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+    <property name="cache.use_query_cache">false</property>
+    <property name="cache.use_minimal_puts">false</property>
+    <property name="max_fetch_depth">3</property>
+
+    <!-- Echo all executed SQL to stdout -->
+    <property name="show_sql">true</property>
+
+    <!-- Drop and re-create the database schema on startup -->
+    <!-- <property name="hbm2ddl.auto">create</property> -->
+
+    <!-- Remember to add mappings to hibernate.cfg.xml as well! -->
+    <mapping resource="org/imo/lrit/ide/common/model/AIAppAccount.hbm.xml"/>
+    <!-- <mapping resource="org/imo/lrit/ide/common/model/AIAppAccountRole.hbm.xml"/> -->
+    <mapping resource="org/imo/lrit/ide/common/model/AIAppRole.hbm.xml"/>
+    <mapping resource="org/imo/lrit/ide/common/model/BufferedObject.hbm.xml"/>
+	<mapping resource="org/imo/lrit/ide/common/model/DataCentre.hbm.xml"/>
+    <mapping resource="org/imo/lrit/ide/common/model/DataCentreContact.hbm.xml"/>
+	<mapping resource="org/imo/lrit/ide/common/model/DataUser.hbm.xml"/>
+    <mapping resource="org/imo/lrit/ide/common/model/DataUserContact.hbm.xml"/>
+	<mapping resource="org/imo/lrit/ide/common/model/DDPServer.hbm.xml"/>
+    <mapping resource="org/imo/lrit/ide/common/model/DDPServerContact.hbm.xml"/>
+    <mapping resource="org/imo/lrit/ide/common/model/DDPVersionInfo.hbm.xml"/>
+    <mapping resource="org/imo/lrit/ide/common/model/IDE.hbm.xml"/>
+    <mapping resource="org/imo/lrit/ide/common/model/IDEContact.hbm.xml"/>
+	<mapping resource="org/imo/lrit/ide/common/model/IdeProperty.hbm.xml"/>
+	<mapping resource="org/imo/lrit/ide/common/model/JournalEntry.hbm.xml"/>
+	<mapping resource="org/imo/lrit/ide/common/model/LritCoordinator.hbm.xml"/>
+    <mapping resource="org/imo/lrit/ide/common/model/LritCoordinatorContact.hbm.xml"/>
+	<mapping resource="org/imo/lrit/ide/common/model/PriceList.hbm.xml"/>
+	<mapping resource="org/imo/lrit/ide/common/model/PriceListDataProvider.hbm.xml"/>
+	<mapping resource="org/imo/lrit/ide/common/model/TimedTask.hbm.xml"/>
+	
+  </session-factory>
+
+</hibernate-configuration>
